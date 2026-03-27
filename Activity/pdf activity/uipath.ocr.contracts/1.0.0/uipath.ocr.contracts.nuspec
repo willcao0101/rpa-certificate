@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>UiPath.OCR.Contracts</id>
+    <version>1.0.0</version>
+    <title>UiPath OCR Contracts</title>
+    <authors>UiPath</authors>
+    <owners>UiPath</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>http://www.uipath.com/</projectUrl>
+    <iconUrl>http://www.uipath.com/favicon.ico</iconUrl>
+    <description>The UiPath.OCR.Contracts package contains the contracts needed to develop new OCR engines.</description>
+    <dependencies />
+  </metadata>
+</package>

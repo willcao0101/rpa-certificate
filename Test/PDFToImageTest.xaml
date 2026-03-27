@@ -1,0 +1,299 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="hello" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap:VirtualizedContainerService.HintSize="1510,958" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:si="clr-namespace:System.IO;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>PdfiumViewer</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Net.Http</x:String>
+      <x:String>System.Net</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Drawing.Imaging</x:String>
+      <x:String>PDFToImageClass</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>UiPath.FTP.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.FTP.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities.Extensions</AssemblyReference>
+      <AssemblyReference>UiPath.Vision.Core</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Contracts</AssemblyReference>
+      <AssemblyReference>System.Net.Http.WebRequest</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>PdfiumViewer</AssemblyReference>
+      <AssemblyReference>System.Net.Http</AssemblyReference>
+      <AssemblyReference>PDFToImageClass</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="hello" sap:VirtualizedContainerService.HintSize="376,893" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Default="hello world" Name="hello" />
+      <Variable x:TypeArguments="si:DirectoryInfo" Name="fileInfo" />
+      <Variable x:TypeArguments="x:String" Name="tableCertificateStr" />
+      <Variable x:TypeArguments="x:String" Name="tableDSSStr" />
+      <Variable x:TypeArguments="x:String" Name="filePath" />
+      <Variable x:TypeArguments="si:FileInfo" Name="downloadFile" />
+      <Variable x:TypeArguments="ui:Image" Name="image" />
+      <Variable x:TypeArguments="x:String" Name="imageOCRStr" />
+      <Variable x:TypeArguments="x:Boolean" Name="aaaa" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:InvokeCode ContinueOnError="{x:Null}" Code="string[] files = Directory.GetFiles(@&quot;\\10.205.96.10\Data\09-SAFETY\a2- Project Information\b1-Review Finished\c3-AVIT\SHES2107014565AT NA&quot;);&#xD;&#xA;foreach(string file in files){&#xD;&#xA;&#x9;Console.WriteLine(file);&#xD;&#xA;}" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_7" Language="CSharp">
+      <ui:InvokeCode.Arguments>
+        <scg:Dictionary x:TypeArguments="x:String, Argument" />
+      </ui:InvokeCode.Arguments>
+    </ui:InvokeCode>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_16">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,198" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'BUTTON  u_M_P1_BtnChang...'" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="Click_3" KeyModifiers="None" MouseButton="BTN_LEFT">
+            <ui:Click.CursorPosition>
+              <ui:CursorPosition Position="Center">
+                <ui:CursorPosition.OffsetX>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:CursorPosition.OffsetX>
+                <ui:CursorPosition.OffsetY>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:CursorPosition.OffsetY>
+              </ui:CursorPosition>
+            </ui:Click.CursorPosition>
+            <ui:Click.Target>
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="43ee63f4-0d28-45a2-87ad-9ee65cbe5c2d" InformativeScreenshot="a2bee870f25942bba4f9d9e42550b4e1" Selector="&lt;html app='chrome.exe' title='Create Certificate Order' /&gt;&lt;webctrl src='../../erp/display.aspx?lnk=Cust.SGS.PERLAII.CERT.OrderURI&amp;amp;sId=10*' tag='IFRAME' /&gt;&lt;webctrl tag='TD' aaname='Close' /&gt;">
+                <ui:Target.TimeoutMS>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:Target.TimeoutMS>
+                <ui:Target.WaitForReady>
+                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                </ui:Target.WaitForReady>
+              </ui:Target>
+            </ui:Click.Target>
+          </ui:Click>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_15">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,198" sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:GetValue ContinueOnError="{x:Null}" DisplayName="Get Text 'INPUT  u_M_P1_DataGrid8...'" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="GetValue_2">
+            <ui:GetValue.Target>
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="d52538fb-3ca4-4ac5-ae02-5d8a64942eb1" InformativeScreenshot="28b9bcbe141d1a1d427a434e66bab2b3" Selector="&lt;html app='chrome.exe' title='Query Certificate Order' /&gt;&lt;webctrl src='../../erp/display.aspx?lnk=Cust.SGS.PERLAII.CERT.OrderListURI*' tag='IFRAME' /&gt;&lt;webctrl parentid='u_M_P1_DataGrid1' tag='A' tableCol='1' tableRow='1' title='Query Certificate Order' /&gt;">
+                <ui:Target.TimeoutMS>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:Target.TimeoutMS>
+                <ui:Target.WaitForReady>
+                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                </ui:Target.WaitForReady>
+              </ui:Target>
+            </ui:GetValue.Target>
+            <ui:GetValue.Value>
+              <OutArgument x:TypeArguments="x:String">[tableDSSStr]</OutArgument>
+            </ui:GetValue.Value>
+          </ui:GetValue>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_13">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,185" sap2010:WorkflowViewState.IdRef="Sequence_14">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:InvokeCode ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="将识别得到的证书空值页码写入到指定Excel中" Code="Regex reg = new Regex(@&quot;.*\((\d*)-(\d*)\).*&quot;);&#xA;List&lt;string&gt; pageStrList = new List&lt;string&gt; {&quot;20623033&quot;, &quot;20624034&quot;, &quot;20625035&quot; };&#xA;string destDir = @&quot;C:\Users\will-w_cao\Desktop\aaa&quot;;&#xA;&#xA;foreach (string pageStr in pageStrList)&#xA;{&#xA;    //遍历目标文件夹，找到指定的excel&#xA;    string[] filePathArr = Directory.GetFiles(destDir);&#xA;    string destExcel = string.Empty;&#xA;    foreach (string filePath in filePathArr)&#xA;    {&#xA;        string fileName = Path.GetFileNameWithoutExtension(filePath);&#xA;        Match match = reg.Match(fileName);&#xA;        string pageStart = match.Groups[1].Value.Trim();&#xA;        string pageEnd = match.Groups[2].Value.Trim();&#xA;        //Console.WriteLine(pageStart+&quot;-&quot;+pageEnd);&#xA;        if (Convert.ToInt32(pageStart) &lt;= Convert.ToInt32(pageStr) &amp;&amp; Convert.ToInt32(pageStr) &lt;= Convert.ToInt32(pageEnd))&#xA;        {&#xA;            destExcel = filePath;&#xA;            break;&#xA;        }&#xA;    }&#xA;&#xA;    Console.WriteLine(&quot;destExcel: &quot;+destExcel);&#xA;    //将管控页码写入到Excel中&#xA;   //将数据写入到Excel中&#xA;&#x9;&#xA;&#x9;&#xA;&#x9;//待封装函数&#xA;    //1.创建Applicaton对象&#xA;    Microsoft.Office.Interop.Excel.Application xApp = new Microsoft.Office.Interop.Excel.Application();&#xA;    //2.得到workbook对象，打开已有的文件&#xA;    Microsoft.Office.Interop.Excel.Workbook xBook = xApp.Workbooks.Open(destExcel);&#xA;    //3.指定要操作的Sheet&#xA;    Microsoft.Office.Interop.Excel.Worksheet xSheet = (Microsoft.Office.Interop.Excel.Worksheet)xBook.Sheets[1];&#xA;    //4.向相应对位置写入相应的数据&#xA;    int totalRow = xSheet.UsedRange.Rows.Count;&#xA;    int totalCol = xSheet.UsedRange.Columns.Count;&#xA;&#xA;    //bool signFlag = true;&#xA;    List&lt;string&gt; signList = new List&lt;string&gt;();&#xA;    List&lt;string&gt; lockList = new List&lt;string&gt;();&#xA;    //根据第二列的内容，找到指定的行和列&#xA;    for (int row = 1; row &lt; totalRow; row++)&#xA;    {&#xA;        Microsoft.Office.Interop.Excel.Range destRange = (Microsoft.Office.Interop.Excel.Range)xSheet.Cells[row, 2];&#xA;        if (destRange.Text.ToString().Trim().Contains(pageStr))&#xA;        {&#xA;            int destRow = row;&#xA;            Console.WriteLine(&quot;desRow: &quot; + row.ToString());&#xA;            xSheet.Cells[destRow, 3] = DateTime.Now.ToString(&quot;yyyy/MM/dd&quot;);&#xA;            xSheet.Cells[destRow, 4] = &quot;Andrew Zhai&quot;;&#xA;            xSheet.Cells[destRow, 5] = &quot;GC/SH/2021/000354&quot;;&#xA;            xSheet.Cells[destRow, 6] = &quot;SHES2109018149HS&quot;;&#xA;            break;&#xA;        }&#xA;    }&#xA;&#xA;    //5.保存保存WorkBook&#xA;    xBook.Save();&#xA;    //6.从内存中关闭Excel对象&#xA;    xSheet = null;&#xA;    xBook.Close();&#xA;    xBook = null;&#xA;    //关闭EXCEL的提示框&#xA;    xApp.DisplayAlerts = false;&#xA;    //Excel从内存中退出&#xA;    xApp.Quit();&#xA;    xApp = null;&#xA;&#x9;&#xA;}" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="200,93" sap2010:WorkflowViewState.IdRef="InvokeCode_6" Language="CSharp">
+            <ui:InvokeCode.Arguments>
+              <scg:Dictionary x:TypeArguments="x:String, Argument" />
+            </ui:InvokeCode.Arguments>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:InvokeCode>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_11">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,256" sap2010:WorkflowViewState.IdRef="Sequence_12">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:InvokeCode ContinueOnError="{x:Null}" Code="string pdfPath = @&quot;C:\Users\will-w_cao\Desktop\DSS_GC-SH-2021-000354.pdf&quot;;&#xA;string imageDir = @&quot;C:\Users\will-w_cao\Desktop\aaa&quot;;&#xA;PDFToImageClass.PdfiumViewerTool pvt = new PDFToImageClass.PdfiumViewerTool();&#xA;List&lt;string&gt; imagePathList = pvt.GetImagePath(pdfPath, imageDir);&#xA;foreach (string imagePath in imagePathList)&#xA;{&#xA;    Console.WriteLine(imagePath);&#xA;}" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_5" Language="CSharp">
+            <ui:InvokeCode.Arguments>
+              <scg:Dictionary x:TypeArguments="x:String, Argument" />
+            </ui:InvokeCode.Arguments>
+          </ui:InvokeCode>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_10">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,256" sap2010:WorkflowViewState.IdRef="Sequence_11">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:InvokeCode ContinueOnError="{x:Null}" Code="string pdfPath = @&quot;C:\Users\will-w_cao\Desktop\DSS_GC-SH-2021-000354.pdf&quot;;&#xA;string imageDir = @&quot;C:\Users\will-w_cao\Desktop\aaa&quot;;&#xA;var pdf = PdfiumViewer.PdfDocument.Load(pdfPath);&#xA;var pdfPage = pdf.PageCount;&#xA;var pageSizes = pdf.PageSizes;&#xA;&#xA;PDFToImageClass.PdfiumViewerTool p2p = new PDFToImageClass.PdfiumViewerTool();&#xA;for (int pageNumber = 1; pageNumber &lt;= pdfPage; pageNumber++)&#xA;{&#xA;    Size size = new Size();&#xA;    size.Height = (int)pageSizes[(pageNumber - 1)].Height;&#xA;    size.Width = (int)pageSizes[(pageNumber - 1)].Width;&#xA;    p2p.RenderPage(pdfPath, pageNumber, size, imageDir + &quot;\\&quot; + pageNumber + @&quot;.jpg&quot;);&#xA;}" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_4" Language="CSharp">
+            <ui:InvokeCode.Arguments>
+              <scg:Dictionary x:TypeArguments="x:String, Argument" />
+            </ui:InvokeCode.Arguments>
+          </ui:InvokeCode>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_9">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,256" sap2010:WorkflowViewState.IdRef="Sequence_10">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:InvokeCode ContinueOnError="{x:Null}" Code="string pdfPath = @&quot;C:\Users\will-w_cao\Desktop\DSS_GC-SH-2021-000354.pdf&quot;;&#xA;string imageDir = @&quot;C:\Users\will-w_cao\Desktop\aaa&quot;;&#xA;PdfiumViewer.PdfDocument pdf = PdfiumViewer.PdfDocument.Load(pdfPath);&#xA;int pdfpage = pdf.PageCount;&#xA;//var pagesizes = pdf.PageSizes;&#xA;IList&lt;System.Drawing.SizeF&gt; pagesizes = pdf.PageSizes;&#xA;int dpi = 300;&#xA;" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_3" Language="CSharp">
+            <ui:InvokeCode.Arguments>
+              <scg:Dictionary x:TypeArguments="x:String, Argument" />
+            </ui:InvokeCode.Arguments>
+          </ui:InvokeCode>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_12">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,256" sap2010:WorkflowViewState.IdRef="Sequence_13">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:InvokeCode ContinueOnError="{x:Null}" Code="string imagePath = @&quot;C:\Users\will-w_cao\Desktop\aaa\1.png&quot;;&#xA;// 百度云中开通对应服务应用的 API Key 建议开通应用的时候多选服务&#xA;string clientId = &quot;qs9o8Px3RSo9xdGev23HFrnQ&quot;;&#xA;// 百度云中开通对应服务应用的 Secret Key&#xA;string clientSecret = &quot;8Sm7Zk12edtjGolG8MSmNSkTxd0uOcxH&quot;;&#xA;String authHost = &quot;https://aip.baidubce.com/oauth/2.0/token&quot;;&#xA;System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();&#xA;List&lt;KeyValuePair&lt;String, String&gt;&gt; paraList = new List&lt;KeyValuePair&lt;string, string&gt;&gt;();&#xA;paraList.Add(new KeyValuePair&lt;string, string&gt;(&quot;grant_type&quot;, &quot;client_credentials&quot;));&#xA;paraList.Add(new KeyValuePair&lt;string, string&gt;(&quot;client_id&quot;, clientId));&#xA;paraList.Add(new KeyValuePair&lt;string, string&gt;(&quot;client_secret&quot;, clientSecret));&#xA;&#xA;HttpResponseMessage response = client.PostAsync(authHost, new FormUrlEncodedContent(paraList)).Result;&#xA;string result = response.Content.ReadAsStringAsync().Result;&#xA;//Console.WriteLine(result);&#xA;Dictionary&lt;string, object&gt; resultDict = JsonConvert.DeserializeObject&lt;Dictionary&lt;string, object&gt;&gt;(result);&#xA;&#xA;//string response = GeneralBasic.generalBasic(resultDict[&quot;access_token&quot;].ToString(), imagePath);&#xA;//string token = &quot;25.0a6664e0caca951f54736ab9800a42c4.315360000.1950161173.282335-24136513&quot;;&#xA;string host = &quot;https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=&quot; + resultDict[&quot;access_token&quot;].ToString();&#xA;Encoding encoding = Encoding.Default;&#xA;System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(host);&#xA;request.Method = &quot;post&quot;;&#xA;request.KeepAlive = true;&#xA;&#xA;// 图片的base64编码&#xA;FileStream filestream = new FileStream(imagePath, FileMode.Open);&#xA;byte[] arr = new byte[filestream.Length];&#xA;filestream.Read(arr, 0, (int)filestream.Length);&#xA;string base64 = Convert.ToBase64String(arr);&#xA;filestream.Close();&#xA;&#xA;String str = &quot;image=&quot; +  System.Net.WebUtility.UrlEncode(base64);&#xA;byte[] buffer = encoding.GetBytes(str);&#xA;request.ContentLength = buffer.Length;&#xA;request.GetRequestStream().Write(buffer, 0, buffer.Length);&#xA;System.Net.HttpWebResponse responseWeb = (System.Net.HttpWebResponse)request.GetResponse();&#xA;StreamReader reader = new StreamReader(responseWeb.GetResponseStream(), Encoding.Default);&#xA;string res = reader.ReadToEnd();&#xA;Console.WriteLine(&quot;通用文字识别:&quot;);&#xA;Console.WriteLine(res);&#xA;Dictionary&lt;string, object&gt; responseDict = JsonConvert.DeserializeObject&lt;Dictionary&lt;string, object&gt;&gt;(res);&#xA;List&lt;Dictionary&lt;string, string&gt;&gt; dataList = JsonConvert.DeserializeObject&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt;(responseDict[&quot;words_result&quot;].ToString());&#xA;string controlPage = dataList[1][&quot;words&quot;];&#xA;Console.WriteLine(controlPage);" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="InvokeCode_1" Language="CSharp">
+            <ui:InvokeCode.Arguments>
+              <scg:Dictionary x:TypeArguments="x:String, Argument" />
+            </ui:InvokeCode.Arguments>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:InvokeCode>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+  </Sequence>
+</Activity>

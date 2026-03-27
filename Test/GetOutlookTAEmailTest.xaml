@@ -1,0 +1,862 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="getEmail" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_emailTADict" Type="InArgument(scg:Dictionary(x:String, x:String))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1506,4074</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>getEmail_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="40">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>UiPath.Mail</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>LocalLog</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="42">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>LocalLog</AssemblyReference>
+      <AssemblyReference>UiPath.IntelligentOCR</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="第1步，初始化：定义变量，- 建议&#xA;第2步，使用：Get outlook mail messages获取未读邮件的数列其中属性“MarkAsRead”同&quot;OnlyUnreadMessages&quot;要选中，“Account” 要求大小写，“Filter”最佳是填写，如果没有填写，那么需要在循环中进行过滤&#xA;第3步，循环获取到的邮件数列，按邮件主题同收件时间命名保存邮件" DisplayName="Get Outlook Email Attachment" sap:VirtualizedContainerService.HintSize="1163,4009" sap2010:WorkflowViewState.IdRef="Sequence_5">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="subjectFilterWord">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String" Value="" />
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="scg:List(snm:MailMessage)" Name="myEmsList" />
+      <Variable x:TypeArguments="x:String" Name="defFolder" />
+      <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="AttachmentList" />
+      <Variable x:TypeArguments="x:Boolean" Name="boolFolder" />
+      <Variable x:TypeArguments="s:String[]" Default="[{&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;}]" Name="emailinfo" />
+      <Variable x:TypeArguments="x:Boolean" Default="False" Name="recoverAppEx" />
+      <Variable x:TypeArguments="s:String[]" Name="appFormName" />
+      <Variable x:TypeArguments="x:Boolean" Name="boolFile" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="1121,3860" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <TryCatch.Try>
+        <Sequence sap:VirtualizedContainerService.HintSize="1083,3633" sap2010:WorkflowViewState.IdRef="Sequence_44">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:Int32" Name="count" />
+            <Variable x:TypeArguments="x:Boolean" Name="emailFindFlag" />
+          </Sequence.Variables>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="1041,61" sap2010:WorkflowViewState.IdRef="WriteLine_11" Text="[System.Environment.NewLine+&quot;Start download email attachment: &quot;+datetime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss.fff&quot;)]" />
+          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="1041,51" sap2010:WorkflowViewState.IdRef="CommentOut_24">
+            <ui:CommentOut.Body>
+              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="304,152" sap2010:WorkflowViewState.IdRef="Sequence_55">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_29">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[in_emailTADict]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[new Dictionary(of string, string)]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </ui:CommentOut.Body>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:CommentOut>
+          <Sequence DisplayName="init" sap:VirtualizedContainerService.HintSize="1041,252" sap2010:WorkflowViewState.IdRef="Sequence_28">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_18">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[subjectFilterWord]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">["Performance Testd Mark_NEW_ KSES2201000050LM_加急_Xu, Wendy-HJ (KunShan) &lt;Wendy-HJ.Xu@sgs.com&gt;"]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign DisplayName="Assign3" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_20">
+              <Assign.To>
+                <OutArgument x:TypeArguments="scg:List(snm:MailMessage)">[myEmsList]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="scg:List(snm:MailMessage)">[nothing]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </Sequence>
+          <Sequence sap:VirtualizedContainerService.HintSize="1041,2956" sap2010:WorkflowViewState.IdRef="Sequence_90">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="999,61" sap2010:WorkflowViewState.IdRef="WriteLine_33" Text="######加急TA邮件检查######" />
+            <Assign sap:VirtualizedContainerService.HintSize="999,60" sap2010:WorkflowViewState.IdRef="Assign_30">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Int32">0</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap:VirtualizedContainerService.HintSize="999,60" sap2010:WorkflowViewState.IdRef="Assign_33">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Boolean">[emailFindFlag]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:InterruptibleWhile sap2010:Annotation.AnnotationText="TA申请邮件-加急" Condition="[count &lt; 100]" DisplayName="While" sap:VirtualizedContainerService.HintSize="999,2563" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_1">
+              <ui:InterruptibleWhile.Body>
+                <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="963,2367" sap2010:WorkflowViewState.IdRef="Sequence_63">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <If sap2010:Annotation.AnnotationText="如果outlook为打开的，直接读取邮件" Condition="[string.Equals(&quot;true&quot;,&quot;true&quot;)]" DisplayName="If outlook open" sap:VirtualizedContainerService.HintSize="921,475" sap2010:WorkflowViewState.IdRef="If_8">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,287" sap2010:WorkflowViewState.IdRef="TryCatch_4">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <TryCatch.Try>
+                          <ui:GetOutlookMailMessages FilterByMessageIds="{x:Null}" TimeoutMS="{x:Null}" Account="RPA-CA.SHEEC@sgs.com" DisplayName="Get outlook mail messages" Filter="[&quot;@SQL=&quot;+&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_NEW_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Amend_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Mod_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_MOD_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Main+Co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Renew_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_new_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_New_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_amend_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_mod_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_main+co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_renew_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_RENEW_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_AMEND/MOD_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_revision_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Revision_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_issue_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Issue_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_常规&quot;+&quot;%'&quot;]" GetAttachements="False" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_4" MailFolder="Inbox" MarkAsRead="True" Messages="[myEmsList]" OnlyUnreadMessages="True" OrderByDate="NewestFirst" Top="1" />
+                        </TryCatch.Try>
+                        <TryCatch.Catches>
+                          <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <ActivityAction x:TypeArguments="s:Exception">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                              </ActivityAction.Argument>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,467" sap2010:WorkflowViewState.IdRef="Sequence_29">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_12" Text="[&quot;get outlook email error:&quot; + exception.Message + &quot; exception source:&quot;+exception.Source]" />
+                                <ui:KillProcess AppliesTo="{x:Null}" Process="{x:Null}" ContinueOnError="True" DisplayName="Kill process" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="KillProcess_4" ProcessName="OUTLOOK" />
+                                <Assign sap2010:Annotation.AnnotationText="异常都标记，后面好截图&#xA;" DisplayName="Set recover flag" sap:VirtualizedContainerService.HintSize="334,102" sap2010:WorkflowViewState.IdRef="Assign_21">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:Boolean">[recoverAppEx]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                  </Assign.Value>
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                </Assign>
+                              </Sequence>
+                            </ActivityAction>
+                          </Catch>
+                        </TryCatch.Catches>
+                      </TryCatch>
+                    </If.Then>
+                    <If.Else>
+                      <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,287" sap2010:WorkflowViewState.IdRef="TryCatch_5">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <TryCatch.Try>
+                          <ui:GetOutlookMailMessages FilterByMessageIds="{x:Null}" TimeoutMS="{x:Null}" Account="[in_config(&quot;AppSmtpAccount&quot;).ToString]" DisplayName="Get outlook mail messages" Filter="[&quot;@SQL=&quot;+&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_NEW_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Amend_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Mod_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Main+Co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_Renew_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_new_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_New_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_amend_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_mod_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_main+co-license_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_renew_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot; + &quot; OR &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_RENEW_&quot;+&quot;%'&quot; + &quot; AND &quot; +&quot;&quot;&quot;&quot;+ &quot;urn:schemas:httpmail:subject&quot; +&quot;&quot;&quot;&quot;+ &quot; like '%&quot;+&quot;_加急&quot;+&quot;%'&quot;]" GetAttachements="False" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_5" MailFolder="[in_config(&quot;MailFolder&quot;).ToString()]" MarkAsRead="True" Messages="[myEmsList]" OnlyUnreadMessages="True" OrderByDate="NewestFirst" Top="1" />
+                        </TryCatch.Try>
+                        <TryCatch.Catches>
+                          <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <ActivityAction x:TypeArguments="s:Exception">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                              </ActivityAction.Argument>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,467" sap2010:WorkflowViewState.IdRef="Sequence_30">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_13" Text="[&quot;get outlook email error:&quot; + exception.Message + &quot; exception source:&quot;+exception.Source]" />
+                                <ui:KillProcess AppliesTo="{x:Null}" Process="{x:Null}" ContinueOnError="True" DisplayName="Kill process" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="KillProcess_5" ProcessName="OUTLOOK" />
+                                <Assign sap2010:Annotation.AnnotationText="异常都标记，后面好截图&#xA;" DisplayName="Set recover flag" sap:VirtualizedContainerService.HintSize="334,102" sap2010:WorkflowViewState.IdRef="Assign_22">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:Boolean">[recoverAppEx]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                  </Assign.Value>
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                </Assign>
+                              </Sequence>
+                            </ActivityAction>
+                          </Catch>
+                        </TryCatch.Catches>
+                      </TryCatch>
+                    </If.Else>
+                  </If>
+                  <If sap2010:Annotation.AnnotationText="如果存在异常为真，重新打开outlook.exe应用程序" Condition="[recoverAppEx]" DisplayName="5.1.3 Recover" sap:VirtualizedContainerService.HintSize="921,93" sap2010:WorkflowViewState.IdRef="If_10">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <Sequence DisplayName="Close and reopen apps" sap:VirtualizedContainerService.HintSize="797,765" sap2010:WorkflowViewState.IdRef="Sequence_33">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <Sequence sap2010:Annotation.AnnotationText="When you need to recover, close all the applications" DisplayName="5.1.3.1 CloseAllApplications" sap:VirtualizedContainerService.HintSize="755,673" sap2010:WorkflowViewState.IdRef="Sequence_32">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="713,51" sap2010:WorkflowViewState.IdRef="CommentOut_10">
+                            <ui:CommentOut.Body>
+                              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,198" sap2010:WorkflowViewState.IdRef="Sequence_31">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <ui:CloseApplication DisplayName="Close Application 'OUTLOOK.EXE Inbox'" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="CloseApplication_2">
+                                  <ui:CloseApplication.Target>
+                                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="3bf234de-e807-4b94-859c-8fecf8450e8b" InformativeScreenshot="4cd951f9ce977ef6d7cc9ae7b54df07d" Selector="&lt;wnd app='outlook.exe' cls='rctrl_renwnd32' title='*Microsoft Outlook' /&gt;" WaitForReady="INTERACTIVE">
+                                      <ui:Target.TimeoutMS>
+                                        <InArgument x:TypeArguments="x:Int32" />
+                                      </ui:Target.TimeoutMS>
+                                    </ui:Target>
+                                  </ui:CloseApplication.Target>
+                                </ui:CloseApplication>
+                              </Sequence>
+                            </ui:CommentOut.Body>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:CommentOut>
+                          <ui:KillProcess AppliesTo="{x:Null}" Process="{x:Null}" ContinueOnError="True" DisplayName="Kill process" sap:VirtualizedContainerService.HintSize="713,22" sap2010:WorkflowViewState.IdRef="KillProcess_6" ProcessName="OUTLOOK" />
+                          <Delay Duration="00:01:00" sap:VirtualizedContainerService.HintSize="713,22" sap2010:WorkflowViewState.IdRef="Delay_2">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </Delay>
+                          <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="713,61" sap2010:WorkflowViewState.IdRef="WriteLine_18" Text="Failed,Get Outlook Failed" />
+                          <If Condition="[string.Equals(in_config(&quot;OfficeVersion&quot;).ToString.ToLower,&quot;new&quot;)]" DisplayName="If office version" sap:VirtualizedContainerService.HintSize="713,234" sap2010:WorkflowViewState.IdRef="If_9">
+                            <If.Then>
+                              <ui:StartProcess Arguments="{x:Null}" WorkingDirectory="{x:Null}" DisplayName="Start Process" FileName="C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="StartProcess_3" />
+                            </If.Then>
+                            <If.Else>
+                              <ui:StartProcess Arguments="{x:Null}" WorkingDirectory="{x:Null}" DisplayName="Start Process" FileName="C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="StartProcess_4" />
+                            </If.Else>
+                          </If>
+                        </Sequence>
+                      </Sequence>
+                    </If.Then>
+                    <If.Else>
+                      <Assign sap2010:Annotation.AnnotationText="异常都标记，后面好截图&#xA;" DisplayName="Set recover flag" sap:VirtualizedContainerService.HintSize="262,102" sap2010:WorkflowViewState.IdRef="Assign_23">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Boolean">[recoverAppEx]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                        </Assign.Value>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </Assign>
+                    </If.Else>
+                  </If>
+                  <If Condition="[myEmsList.Count = 0]" sap:VirtualizedContainerService.HintSize="921,246" sap2010:WorkflowViewState.IdRef="If_19">
+                    <If.Then>
+                      <ui:Break sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Break_4" />
+                    </If.Then>
+                  </If>
+                  <ui:ForEach x:TypeArguments="snm:MailMessage" CurrentIndex="{x:Null}" DisplayName="For each" sap:VirtualizedContainerService.HintSize="921,983" sap2010:WorkflowViewState.IdRef="ForEach`1_8" Values="[myEmsList]">
+                    <ui:ForEach.Body>
+                      <ActivityAction x:TypeArguments="snm:MailMessage">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="snm:MailMessage" Name="email" />
+                        </ActivityAction.Argument>
+                        <Sequence sap2010:Annotation.AnnotationText="如果第2步没有在控件“Get outlook mail messages”的“Filter”属性中按要求设置过滤主题，那么这里就需要加if来判断message的主题/收件人是不是符合要求-（有个缺陷：将不符合要求的邮件也会设置为已读，需要重新设置为未读）" DisplayName="Body" sap:VirtualizedContainerService.HintSize="735,860" sap2010:WorkflowViewState.IdRef="Sequence_43">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Name="messageDict" />
+                          </Sequence.Variables>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <If Condition="[email.Subject.ToString().StartsWith(&quot;RE:&quot;) or email.Subject.ToString().StartsWith(&quot;FW:&quot;) or email.Subject.ToString().StartsWith(&quot;GCC&quot;)]" sap:VirtualizedContainerService.HintSize="693,513" sap2010:WorkflowViewState.IdRef="If_17">
+                            <If.Then>
+                              <Sequence sap:VirtualizedContainerService.HintSize="272,153" sap2010:WorkflowViewState.IdRef="Sequence_92">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="230,61" sap2010:WorkflowViewState.IdRef="WriteLine_23" Text="[&quot;Subject: &quot; + email.Subject.ToString]" />
+                              </Sequence>
+                            </If.Then>
+                            <If.Else>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,356" sap2010:WorkflowViewState.IdRef="Sequence_67">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_34">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:Boolean">[emailFindFlag]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                                <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dictionary&lt;string, string&gt; messageDict = new Dictionary&lt;string, string&gt;();&#xA;//messageDict = new Dictionary&lt;string, string&gt;();&#xA;messageDict.Add(&quot;subject&quot;, email.Subject.ToString());&#xA;messageDict.Add(&quot;sender&quot;, email.Sender.Address.ToString());&#xA;messageDict.Add(&quot;body&quot;, email.Body.ToString());&#xA;messageDict.Add(&quot;cc&quot;, email.CC.ToString());&#xA;messageDict.Add(&quot;to&quot;, email.To.ToString());&#xA;messageDict.Add(&quot;sent&quot;, email.DateAsDateTime().ToString());&#xA;string[] tempArr = messageDict[&quot;body&quot;].Split('\n');&#xA;foreach(string tempStr in tempArr)&#xA;{&#xA;c&#xA;}&#xA;foreach (var item in messageDict)&#xA;{&#xA;    Console.WriteLine(item.Key +&quot;:::&quot;+ item.Value);&#xA;}&#xA;&#xA;string[] files = Directory.GetFiles(messageDict[&quot;案件链接&quot;]);&#xA;foreach(string file in files){&#xA;&#x9;Console.WriteLine(file);&#xA;}" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_4" Language="CSharp">
+                                  <ui:InvokeCode.Arguments>
+                                    <InArgument x:TypeArguments="snm:MailMessage" x:Key="email">[email]</InArgument>
+                                  </ui:InvokeCode.Arguments>
+                                </ui:InvokeCode>
+                              </Sequence>
+                            </If.Else>
+                          </If>
+                          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="693,51" sap2010:WorkflowViewState.IdRef="CommentOut_30">
+                            <ui:CommentOut.Body>
+                              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="812,778" sap2010:WorkflowViewState.IdRef="Sequence_62">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <If Condition="[in_config(&quot;EmailSender&quot;).ToString().Contains(email.Sender.Address.ToString())]" sap:VirtualizedContainerService.HintSize="948,1862" sap2010:WorkflowViewState.IdRef="If_13">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <If.Then>
+                                    <Sequence sap:VirtualizedContainerService.HintSize="376,529" sap2010:WorkflowViewState.IdRef="Sequence_51">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_22">
+                                        <ui:CommentOut.Body>
+                                          <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="304,152" sap2010:WorkflowViewState.IdRef="Sequence_53">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_27">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="s:String[]">[emailinfo]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="s:String[]">[{email.Subject,CDate(email.Headers("Date")).ToString("yyyyMMddHHmmss")}]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                          </Sequence>
+                                        </ui:CommentOut.Body>
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                      </ui:CommentOut>
+                                      <ui:InvokeCode ContinueOnError="{x:Null}" Code="//Dictionary&lt;string, string&gt; messageDict = new Dictionary&lt;string, string&gt;();&#xA;//messageDict = new Dictionary&lt;string, string&gt;();&#xA;messageDict.Add(&quot;subject&quot;, email.Subject.ToString());&#xA;messageDict.Add(&quot;sender&quot;, email.Sender.Address.ToString());&#xA;messageDict.Add(&quot;body&quot;, email.Body.ToString());&#xA;messageDict.Add(&quot;cc&quot;, email.CC.ToString());&#xA;string[] tempArr = messageDict[&quot;body&quot;].Split('\n');&#xA;foreach(string tempStr in tempArr)&#xA;{&#xA;    if (tempStr.Contains(&quot;:&quot;)){&#xA;        //Console.WriteLine(tempStr.Trim());&#xA;        string[] kvArr = tempStr.Split(':');&#xA;        messageDict.Add(kvArr[0].Trim(), kvArr[1].Trim());&#xA;    }&#xA;}&#xA;//foreach (var item in messageDict)&#xA;//{&#xA;//    Console.WriteLine(item.Key +&quot;:::&quot;+ item.Value);&#xA;//}" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_3" Language="CSharp">
+                                        <ui:InvokeCode.Arguments>
+                                          <InArgument x:TypeArguments="snm:MailMessage" x:Key="email">[email]</InArgument>
+                                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="messageDict">[in_emailTADict]</InArgument>
+                                        </ui:InvokeCode.Arguments>
+                                      </ui:InvokeCode>
+                                      <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_23">
+                                        <ui:CommentOut.Body>
+                                          <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="272,184" sap2010:WorkflowViewState.IdRef="Sequence_54">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <WriteLine sap2010:Annotation.AnnotationText="{}{&#xA;0:email.Subject,&#xA;1:email.date&#xA;}" DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="230,133" sap2010:WorkflowViewState.IdRef="WriteLine_16" Text="[&quot;subject:&quot;+emailinfo(0)+&quot; date:&quot;+emailinfo(1)+&quot; fullpath:&quot;+emailinfo(2)+&quot; FileName:&quot;+emailinfo(3)+&quot; noext:&quot;+emailinfo(4)]">
+                                              <sap:WorkflowViewStateService.ViewState>
+                                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                                </scg:Dictionary>
+                                              </sap:WorkflowViewStateService.ViewState>
+                                            </WriteLine>
+                                          </Sequence>
+                                        </ui:CommentOut.Body>
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                      </ui:CommentOut>
+                                      <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_21">
+                                        <ui:CommentOut.Body>
+                                          <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="476,1189" sap2010:WorkflowViewState.IdRef="Sequence_52">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="434,1097" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[AttachmentList]">
+                                              <ui:ForEach.Body>
+                                                <ActivityAction x:TypeArguments="x:String">
+                                                  <ActivityAction.Argument>
+                                                    <DelegateInArgument x:TypeArguments="x:String" Name="attachmentPath" />
+                                                  </ActivityAction.Argument>
+                                                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,974" sap2010:WorkflowViewState.IdRef="Sequence_39">
+                                                    <Sequence.Variables>
+                                                      <Variable x:TypeArguments="x:String" Name="newAttachmentPath" />
+                                                    </Sequence.Variables>
+                                                    <sap:WorkflowViewStateService.ViewState>
+                                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                      </scg:Dictionary>
+                                                    </sap:WorkflowViewStateService.ViewState>
+                                                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_24">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:String">[newAttachmentPath]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:String">[Path.Combine(Path.GetDirectoryName(attachmentPath),Path.GetFileNameWithoutExtension(attachmentPath)+"-"+CDate(email.Headers("Date")).ToString("yyyyMMddHHmmss")+".xlsx")]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <ui:InvokeCode ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="重命名" Code="FileSystem.Rename(attachmentPath,newAttachmentPath)" DisplayName="rename" sap:VirtualizedContainerService.HintSize="262,82" sap2010:WorkflowViewState.IdRef="InvokeCode_2">
+                                                      <ui:InvokeCode.Arguments>
+                                                        <InArgument x:TypeArguments="x:String" x:Key="attachmentPath">[attachmentPath]</InArgument>
+                                                        <InArgument x:TypeArguments="x:String" x:Key="newAttachmentPath">[newAttachmentPath]</InArgument>
+                                                      </ui:InvokeCode.Arguments>
+                                                      <sap:WorkflowViewStateService.ViewState>
+                                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                                        </scg:Dictionary>
+                                                      </sap:WorkflowViewStateService.ViewState>
+                                                    </ui:InvokeCode>
+                                                    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="CommentOut_12">
+                                                      <ui:CommentOut.Body>
+                                                        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="426,280" sap2010:WorkflowViewState.IdRef="Sequence_35">
+                                                          <sap:WorkflowViewStateService.ViewState>
+                                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                            </scg:Dictionary>
+                                                          </sap:WorkflowViewStateService.ViewState>
+                                                          <ui:MoveFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="对文件进行重命名" Destination="[Path.Combine(Path.GetDirectoryName(attachmentPath),Path.GetFileNameWithoutExtension(attachmentPath)+&quot;-&quot;+CDate(email.Headers(&quot;Date&quot;)).ToString(&quot;yyyyMMddHHmmss&quot;)+&quot;.xlsx&quot;)]" DisplayName="Move File" sap:VirtualizedContainerService.HintSize="384,188" sap2010:WorkflowViewState.IdRef="MoveFile_2" Overwrite="False" Path="[attachmentPath]">
+                                                            <sap:WorkflowViewStateService.ViewState>
+                                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                                              </scg:Dictionary>
+                                                            </sap:WorkflowViewStateService.ViewState>
+                                                          </ui:MoveFile>
+                                                        </Sequence>
+                                                      </ui:CommentOut.Body>
+                                                      <sap:WorkflowViewStateService.ViewState>
+                                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                        </scg:Dictionary>
+                                                      </sap:WorkflowViewStateService.ViewState>
+                                                    </ui:CommentOut>
+                                                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_25">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:String">[attachmentPath]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:String">[Path.Combine(Path.GetDirectoryName(attachmentPath),Path.GetFileNameWithoutExtension(attachmentPath)+"-"+CDate(email.Headers("Date")).ToString("yyyyMMddHHmmss")+".xlsx")]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_26">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="s:String[]">[appFormName]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="s:String[]">[Path.GetFileNameWithoutExtension(attachmentPath).Split("-"C)]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <If Condition="[appFormName.Length&gt;3]" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_12">
+                                                      <sap:WorkflowViewStateService.ViewState>
+                                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                        </scg:Dictionary>
+                                                      </sap:WorkflowViewStateService.ViewState>
+                                                      <If.Then>
+                                                        <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="CommentOut_13">
+                                                          <ui:CommentOut.Body>
+                                                            <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,151" sap2010:WorkflowViewState.IdRef="Sequence_36">
+                                                              <sap:WorkflowViewStateService.ViewState>
+                                                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                                </scg:Dictionary>
+                                                              </sap:WorkflowViewStateService.ViewState>
+                                                              <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" Buttons="Ok" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_4" Text="[attachmentPath+system.Environment.NewLine+path.GetFullPath(attachmentPath)+system.Environment.NewLine+path.GetFileNameWithoutExtension(attachmentPath)+system.Environment.NewLine+appFormName(0)+appFormName(1)+system.Environment.NewLine+appFormName(2)+system.Environment.NewLine+appFormName(3)+system.Environment.NewLine+appFormName(4)]" TopMost="True" />
+                                                            </Sequence>
+                                                          </ui:CommentOut.Body>
+                                                          <sap:WorkflowViewStateService.ViewState>
+                                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                            </scg:Dictionary>
+                                                          </sap:WorkflowViewStateService.ViewState>
+                                                        </ui:CommentOut>
+                                                      </If.Then>
+                                                      <If.Else>
+                                                        <Sequence sap:VirtualizedContainerService.HintSize="272,488" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                                                          <sap:WorkflowViewStateService.ViewState>
+                                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                            </scg:Dictionary>
+                                                          </sap:WorkflowViewStateService.ViewState>
+                                                          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="230,51" sap2010:WorkflowViewState.IdRef="CommentOut_14">
+                                                            <ui:CommentOut.Body>
+                                                              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,151" sap2010:WorkflowViewState.IdRef="Sequence_37">
+                                                                <sap:WorkflowViewStateService.ViewState>
+                                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                                  </scg:Dictionary>
+                                                                </sap:WorkflowViewStateService.ViewState>
+                                                                <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" Buttons="Ok" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_5" Text="[attachmentPath+system.Environment.NewLine+path.GetFullPath(attachmentPath)+system.Environment.NewLine+path.GetFileNameWithoutExtension(attachmentPath)]" TopMost="True" />
+                                                              </Sequence>
+                                                            </ui:CommentOut.Body>
+                                                            <sap:WorkflowViewStateService.ViewState>
+                                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                              </scg:Dictionary>
+                                                            </sap:WorkflowViewStateService.ViewState>
+                                                          </ui:CommentOut>
+                                                          <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="230,61" sap2010:WorkflowViewState.IdRef="WriteLine_15" Text="[&quot;Error:Naming does not conform to the rules：&quot;+attachmentPath]" />
+                                                          <ui:PathExists DisplayName="Path Exists" Exists="[boolFile]" sap:VirtualizedContainerService.HintSize="230,51" sap2010:WorkflowViewState.IdRef="PathExists_3" Path="[attachmentPath.ToString()]" PathType="File">
+                                                            <sap:WorkflowViewStateService.ViewState>
+                                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                              </scg:Dictionary>
+                                                            </sap:WorkflowViewStateService.ViewState>
+                                                          </ui:PathExists>
+                                                          <If Condition="[boolFile]" sap:VirtualizedContainerService.HintSize="230,51" sap2010:WorkflowViewState.IdRef="If_14">
+                                                            <sap:WorkflowViewStateService.ViewState>
+                                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                              </scg:Dictionary>
+                                                            </sap:WorkflowViewStateService.ViewState>
+                                                            <If.Then>
+                                                              <ui:Delete ContinueOnError="{x:Null}" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delete_3" Path="[attachmentPath.ToString()]" />
+                                                            </If.Then>
+                                                          </If>
+                                                          <ui:Break sap:VirtualizedContainerService.HintSize="230,22" sap2010:WorkflowViewState.IdRef="Break_2" />
+                                                        </Sequence>
+                                                      </If.Else>
+                                                    </If>
+                                                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_28">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="s:String[]">[emailinfo]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="s:String[]">[{email.Subject,CDate(email.Headers("Date")).ToString("yyyyMMddHHmmss"),attachmentPath,path.GetFileName(attachmentPath),path.GetFileNameWithoutExtension(attachmentPath)}]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <WriteLine sap2010:Annotation.AnnotationText="{}{&#xA;0:email.Subject,&#xA;1:email.date&#xA;2:fullpath,&#xA;3:name&#xA;4:NameWithoutExtension&#xA;}" DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="262,178" sap2010:WorkflowViewState.IdRef="WriteLine_21" Text="[&quot;subject:&quot;+emailinfo(0)+&quot; date:&quot;+emailinfo(1)+&quot; fullpath:&quot;+emailinfo(2)+&quot; FileName:&quot;+emailinfo(3)+&quot; noext:&quot;+emailinfo(4)]">
+                                                      <sap:WorkflowViewStateService.ViewState>
+                                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                                        </scg:Dictionary>
+                                                      </sap:WorkflowViewStateService.ViewState>
+                                                    </WriteLine>
+                                                  </Sequence>
+                                                </ActivityAction>
+                                              </ui:ForEach.Body>
+                                              <sap:WorkflowViewStateService.ViewState>
+                                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                </scg:Dictionary>
+                                              </sap:WorkflowViewStateService.ViewState>
+                                            </ui:ForEach>
+                                          </Sequence>
+                                        </ui:CommentOut.Body>
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                      </ui:CommentOut>
+                                    </Sequence>
+                                  </If.Then>
+                                  <If.Else>
+                                    <Sequence sap2010:Annotation.AnnotationText="对于已经下载下来，但是不符合要求的邮件附件，进行删除" sap:VirtualizedContainerService.HintSize="349,501" sap2010:WorkflowViewState.IdRef="Sequence_41">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="307,367" sap2010:WorkflowViewState.IdRef="ForEach`1_7" Values="[AttachmentList]">
+                                        <ui:ForEach.Body>
+                                          <ActivityAction x:TypeArguments="x:Object">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="x:Object" Name="attachmentPath" />
+                                            </ActivityAction.Argument>
+                                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="242,234" sap2010:WorkflowViewState.IdRef="Sequence_40">
+                                              <sap:WorkflowViewStateService.ViewState>
+                                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                </scg:Dictionary>
+                                              </sap:WorkflowViewStateService.ViewState>
+                                              <ui:PathExists DisplayName="Path Exists" Exists="[boolFile]" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="PathExists_4" Path="[attachmentPath.ToString()]" PathType="File">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                              </ui:PathExists>
+                                              <If Condition="[boolFile]" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_15">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <If.Then>
+                                                  <ui:Delete ContinueOnError="{x:Null}" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delete_4" Path="[attachmentPath.ToString()]" />
+                                                </If.Then>
+                                              </If>
+                                            </Sequence>
+                                          </ActivityAction>
+                                        </ui:ForEach.Body>
+                                      </ui:ForEach>
+                                    </Sequence>
+                                  </If.Else>
+                                </If>
+                              </Sequence>
+                            </ui:CommentOut.Body>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:CommentOut>
+                          <ui:CommentOut sap2010:Annotation.AnnotationText="保存邮件" DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="693,82" sap2010:WorkflowViewState.IdRef="CommentOut_15">
+                            <ui:CommentOut.Body>
+                              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,179" sap2010:WorkflowViewState.IdRef="Sequence_42">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <ui:SaveMail DisplayName="Save Mail Message" FilePath="[defFolder+email.Subject+&quot;_ &quot;+CDate(email.Headers(&quot;Date&quot;)).ToString(&quot;yyyyMMddHHmmss&quot;)+&quot;.eml&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="SaveMail_4" MailMessage="[email]" />
+                              </Sequence>
+                            </ui:CommentOut.Body>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:CommentOut>
+                        </Sequence>
+                      </ActivityAction>
+                    </ui:ForEach.Body>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:ForEach>
+                  <If Condition="[emailFindFlag]" sap:VirtualizedContainerService.HintSize="921,218" sap2010:WorkflowViewState.IdRef="If_18">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <ui:Break sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Break_3" />
+                    </If.Then>
+                    <If.Else>
+                      <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="230,61" sap2010:WorkflowViewState.IdRef="WriteLine_22" Text="[&quot;count: &quot;+count.ToString]" />
+                    </If.Else>
+                  </If>
+                  <Assign sap:VirtualizedContainerService.HintSize="921,60" sap2010:WorkflowViewState.IdRef="Assign_31">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">[count + 1]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </ui:InterruptibleWhile.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:InterruptibleWhile>
+          </Sequence>
+          <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="1041,61" sap2010:WorkflowViewState.IdRef="WriteLine_17" Text="[&quot;End download email attachment: &quot;+datetime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss.fff&quot;)+System.Environment.NewLine]" />
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="1087,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence sap:VirtualizedContainerService.HintSize="272,215" sap2010:WorkflowViewState.IdRef="Sequence_46">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="230,61" sap2010:WorkflowViewState.IdRef="WriteLine_19" Text="[exception.Message.ToString()]" />
+              <Rethrow sap2010:Annotation.AnnotationText="如果不抛出异常，则会循环获取邮箱中的邮件（和定时执行程序选其一即可）" sap:VirtualizedContainerService.HintSize="230,79" sap2010:WorkflowViewState.IdRef="Rethrow_1">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </Rethrow>
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+  </Sequence>
+</Activity>

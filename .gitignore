@@ -1,0 +1,17 @@
+.project
+.nuget/
+.packages/
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.temp
+
+.local/
+.objects/
+.screenshots/

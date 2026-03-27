@@ -1,0 +1,75 @@
+{
+  "name": "CACertificateClose",
+  "projectId": "ed55e619-aab8-4b57-8329-98d91026cd6d",
+  "description": "Update and Download Certificate in PM System",
+  "main": "Main.xaml",
+  "dependencies": {
+    "Microsoft.Activities": "[1.0.1]",
+    "Microsoft.Activities.Extensions": "[2.0.6.9]",
+    "Microsoft.Office.Interop.Excel": "[15.0.4795.1000]",
+    "PdfiumViewer": "[2.13.0]",
+    "PDFToImageActivities": "[1.1.1]",
+    "SGS-CSTC.Activities.LocalLog": "[1.0.0]",
+    "System.Drawing.Common": "[5.0.2]",
+    "System.Drawing.Primitives": "[4.3.0]",
+    "System.Net.Http": "[4.1.4]",
+    "System.Runtime.CompilerServices.Unsafe": "[4.7.1]",
+    "UiPath.Credentials.Activities": "[1.1.6479.13204]",
+    "UiPath.Excel.Activities": "[2.11.4]",
+    "UiPath.FTP.Activities": "[1.0.6710.16240]",
+    "UiPath.IntelligentOCR.Activities": "[4.10.0]",
+    "UiPath.Mail.Activities": "[1.12.2]",
+    "UiPath.System.Activities": "[21.10.2]",
+    "UiPath.UIAutomation.Activities": "[21.10.3]",
+    "VVaidya.AutoCloseMessageBox.Activities": "[1.0.4]"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "20.10.2.0",
+  "projectVersion": "1.0.1",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": false,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Process",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [],
+    "modernBehavior": false
+  },
+  "expressionLanguage": "CSharp",
+  "entryPoints": [
+    {
+      "filePath": "Main.xaml",
+      "uniqueId": "fea3785f-3bfc-4071-865c-c4c6e0a0db16",
+      "input": [],
+      "output": []
+    }
+  ],
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Legacy"
+}
