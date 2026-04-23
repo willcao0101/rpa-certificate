@@ -1,4 +1,4 @@
-# CACertificateClose — RPA Certificate Processing Bot
+# RPA Certificate Processing Bot
 
 An unattended UiPath RPA process that automates certificate retrieval and download from the PM system by processing incoming Outlook emails, validating request fields, executing web automation via Chrome, and sending result notifications.
 
